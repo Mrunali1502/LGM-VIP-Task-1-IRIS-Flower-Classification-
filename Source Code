@@ -1,0 +1,171 @@
+Task 1 : Iris Flowers Classification ML Project :
+Step 1 : Importing Library and Data:
+
+[ ]
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn import datasets #Visualization
+import seaborn as sns #Visualization
+print("Library imported successfully..")
+Library imported successfully..
+[ ]
+from google.colab import files
+uploaded = files.upload()
+
+[ ]
+!ls
+'iris (1).csv'	 iris.csv   sample_data
+Step 2 : read csv file
+[ ]
+data = pd.read_csv('iris.csv',header=None,encoding='utf-8')
+[ ]
+features = data.iloc[:,:4]
+label = data.iloc[:,4]
+
+print(features)
+print(label)
+       0    1    2    3
+0    5.1  3.5  1.4  0.2
+1    4.9  3.0  1.4  0.2
+2    4.7  3.2  1.3  0.2
+3    4.6  3.1  1.5  0.2
+4    5.0  3.6  1.4  0.2
+..   ...  ...  ...  ...
+145  6.7  3.0  5.2  2.3
+146  6.3  2.5  5.0  1.9
+147  6.5  3.0  5.2  2.0
+148  6.2  3.4  5.4  2.3
+149  5.9  3.0  5.1  1.8
+
+[150 rows x 4 columns]
+0         Iris-setosa
+1         Iris-setosa
+2         Iris-setosa
+3         Iris-setosa
+4         Iris-setosa
+            ...      
+145    Iris-virginica
+146    Iris-virginica
+147    Iris-virginica
+148    Iris-virginica
+149    Iris-virginica
+Name: 4, Length: 150, dtype: object
+By using data.head() ,we can see the top 5 rows and columns value present in dataset.If we add value in data.head(100) it will show me the records of 100 rows and columns.
+
+[ ]
+data.head()
+
+Here is the information about Dataset iris.csv
+
+[ ]
+data.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 150 entries, 0 to 149
+Data columns (total 5 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   0       150 non-null    float64
+ 1   1       150 non-null    float64
+ 2   2       150 non-null    float64
+ 3   3       150 non-null    float64
+ 4   4       150 non-null    object 
+dtypes: float64(4), object(1)
+memory usage: 6.0+ KB
+I have describe the dataset by using data.describe() function.
+
+[ ]
+data.describe()
+
+Here I checked for the null value is present or not in dataset if iris.csv
+
+[ ]
+data.isnull().sum()
+0    0
+1    0
+2    0
+3    0
+4    0
+dtype: int64
+We can see the count of varieties present in dataset
+
+[ ]
+data[4].value_counts()
+Iris-setosa        50
+Iris-versicolor    50
+Iris-virginica     50
+Name: 4, dtype: int64
+Step 3 : Visualising Data
+Pair Plot
+
+[ ]
+sns.pairplot(data, hue=4)
+plt.show()
+
+Heatmap : For the better understanding of realtion between petal and sepals properties.
+
+[ ]
+plt.figure(figsize=(10,5))
+sns.heatmap(data.corr(), annot=True)
+plt.show()
+
+Step 4 :Model Building
+Splitting Data in X & y
+
+[ ]
+X = data.drop([4], axis=1)
+y = data[4]
+# print(X.head())
+print(X.shape)
+# print(y.head())
+print(y.shape)
+Split the dataset into a training set and a testing set
+
+[ ]
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=5)
+print(X_train.shape)
+print(y_train.shape)
+print(X_test.shape)
+print(y_test.shape)
+Logistic Regression
+[ ]
+from sklearn.linear_model import LogisticRegression
+logreg = LogisticRegression()
+logreg.fit(X_train, y_train)
+print("Training is Completed.you can continue for further test")
+Training is Completed.you can continue for further test
+Making Prediction for ligistic regression
+
+[ ]
+y_pred = logreg.predict(X_test)
+print(y_pred)
+Checking Accuracy for logistic regression
+
+[ ]
+from sklearn import metrics
+print(metrics.accuracy_score(y_test, y_pred))
+0.9736842105263158
+KNeighborsClassifier
+[ ]
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier()
+knn.fit(X_train, y_train)
+print("Training is also Completed,you can make prediction and check accuracy...")
+Making Prediction using KNeighborsClassifier
+
+[ ]
+y_pred_knn = knn.predict(X_test)
+print(y_pred_knn)
+Checking Accuracy for KNeighborsClassifier
+
+[ ]
+from sklearn import metrics
+print(metrics.accuracy_score(y_test, y_pred_knn))
+Here we can predicted which Iris variety is present on specific place by using both Logistic regression and knn methods.
+
+[ ]
+predict=logreg.predict([[8.0,2.0,2.0,0.0]])
+print(" ".join(predict))
+[ ]
